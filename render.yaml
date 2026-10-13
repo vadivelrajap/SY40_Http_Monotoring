@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sy40-http-monitor
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DEVICE_ID
+        value: 0C117F0561A4
+      - key: INGEST_TOKEN
+        generateValue: true
+      - key: DASHBOARD_USER
+        sync: false
+      - key: DASHBOARD_PASSWORD
+        sync: false
