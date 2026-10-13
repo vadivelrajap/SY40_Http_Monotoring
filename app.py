@@ -21,9 +21,24 @@ def utc_now():
 def dashboard_auth():
     if not DASHBOARD_USER or not DASHBOARD_PASSWORD:
         return
+
     auth = request.authorization
-    if not auth or auth.username != DASHBOARD_USER or auth.password != DASHBOARD_PASSWORD:
-        return abort(401, www_authenticate='Basic realm="SY-40 Monitor"')
+
+    if (
+        not auth
+        or auth.username != DASHBOARD_USER
+        or auth.password != DASHBOARD_PASSWORD
+    ):
+        from flask import Response
+
+        return Response(
+            "Dashboard login required. Check your credentials.",
+            status=401,
+            headers={
+                "WWW-Authenticate": 'Basic realm="SY-40 Monitor"'
+            },
+            content_type="text/plain",
+        )
 
 @app.before_request
 def protect_dashboard():
